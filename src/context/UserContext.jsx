@@ -19,7 +19,7 @@ export const UserProvider = ({ children }) => {
             try {
                 const user = await userService.getCurrentUser();
                 setCurrentUser(user.data);
-                // console.log(user);
+                console.log(user);
             } catch (error) {
                 console.error('Error fetching current user:', error);
                 setCurrentUser(null);

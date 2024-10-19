@@ -1,104 +1,141 @@
-import React, { useState, useEffect } from "react";
-import { Tab, Nav } from "react-bootstrap";
-import ChatSidebar from "./ChatSidebar";
-import ChatHeader from "./ChatHeader";
-import ChatBody from "./ChatBody";
-import ChatFooter from "./ChatFooter";
+import React, { useEffect, useState, useCallback } from "react";
+import { Tab } from "react-bootstrap";
 import Scrollbar from "smooth-scrollbar";
+import Sidebar from "./Sidebar";
+import ChatWindow from "./ChatWindow";
+import { messageService } from "../../services/MessageService";
+import { userService } from '../../services/userService';
 
-import user1 from "../../assets/images/user/01.jpg";
-import user2 from "../../assets/images/user/02.jpg";
-import user3 from "../../assets/images/user/03.jpg";
-
-const Chats = () => {
-  const [active, setActive] = useState("first");
-  const person_online = [
-    {img: user1, name: "Paul Molive"},
-    {img: user2, name: "John Travolta"},
-    {img: user3, name: "Barb Ackue"}
-  ]
-  const messages = [
-    {
-      id: 1,
-      user: {
-        img: user1, // image de l'utilisateur
-        name: "Paul Molive",
-      },
-      text: "Salut, comment ça va ?",
-      time: "16:34",
-      type: "sent", // 'sent' pour les messages envoyés, 'received' pour les messages reçus
-    },
-    {
-      id: 2,
-      user: {
-        img: user2,
-        name: "John Travolta",
-      },
-      text: "Ça va bien, merci ! Et toi ?",
-      time: "16:35",
-      type: "received",
-    },
-    {
-      id: 3,
-      user: {
-        img: user1,
-        name: "Paul Molive",
-      },
-      text: "Je cherche un bon template d'administration.",
-      time: "16:36",
-      type: "sent",
-    },
-    {
-      id: 4,
-      user: {
-        img: user2,
-        name: "John Travolta",
-      },
-      text: "J'en ai trouvé un super sur ThemeForest.",
-      time: "16:37",
-      type: "received",
-    },
-    {
-      id: 5,
-      user: {
-        img: user1,
-        name: "Paul Molive",
-      },
-      text: "Peux-tu me donner le lien ?",
-      time: "16:38",
-      type: "sent",
-    },
-    {
-      id: 6,
-      user: {
-        img: user2,
-        name: "John Travolta",
-      },
-      text: "Bien sûr, voici le lien : [lien du template].",
-      time: "16:39",
-      type: "received",
-    },
-  ];
+const ChatLayout = () => {
+  const [error, setError] = useState(null);
+  const [active, setActive] = useState(null);
+  const [conversations, setConversations] = useState([]);
+  const [currentConversation, setCurrentConversation] = useState(null);
+  const [messages, setMessages] = useState({});
+  const [currentUserId, setCurrentUserId] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     Scrollbar.init(document.querySelector(".data-scrollbar"));
-  })
+    loadConversations();
+    loadCurrentUser();
+  }, []);
 
-  const minisidebar = () => {
-    document.getElementsByTagName("ASIDE")[0].classList.toggle("sidebar-mini");
+  const loadCurrentUser = async () => {
+    try {
+      const response = await userService.getCurrentUser();
+      setCurrentUserId(response.data.id);
+    } catch (error) {
+      console.error("Error loading current user:", error);
+    }
+  };
+
+  const loadConversations = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await messageService.getUserConversations({
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setConversations(response.data);
+    } catch (error) {
+      console.error("Error loading conversations:", error);
+    }
+  };
+
+  const loadMessages = async (conversationId) => {
+    try {
+      const response = await messageService.getConversationMessages(conversationId);
+      setMessages(prevMessages => ({
+        ...prevMessages,
+        [conversationId]: response.data
+      }));
+      setCurrentConversation(conversationId);
+    } catch (error) {
+      console.error("Error loading messages:", error);
+    }
+  };
+
+  const deleteMessage = useCallback(async (messageId, conversationId) => {
+    setMessages(prevMessages => ({
+      ...prevMessages,
+      [conversationId]: prevMessages[conversationId].filter(msg => msg.id !== messageId)
+    }));
+
+    try {
+      setIsDeleting(true);
+      await messageService.deleteMessage(messageId);
+    } catch (error) {
+      console.error("Erreur lors de la suppression du message:", error);
+      setError("Erreur lors de la suppression du message. Veuillez réessayer.");
+      loadMessages(conversationId);
+    } finally {
+      setIsDeleting(false);
+    }
+  }, []);
+
+  const sendMessage = async (newMessage) => {
+    if (newMessage.trim() && currentConversation) {
+      const currentMessages = messages[currentConversation] || [];
+      const receiverId = currentMessages.find(msg => msg.senderId !== currentUserId)?.senderId;
+
+      if (receiverId && receiverId !== currentUserId) {
+        try {
+          const response = await messageService.sendMessage({
+            senderId: currentUserId,
+            receiverId: receiverId,
+            content: newMessage,
+            conversationId: currentConversation
+          });
+
+          setMessages(prevMessages => ({
+            ...prevMessages,
+            [currentConversation]: [
+              ...(prevMessages[currentConversation] || []),
+              {
+                id: response.data.id,
+                content: newMessage,
+                senderId: currentUserId,
+                createdAt: new Date().toISOString(),
+              },
+            ],
+          }));
+
+          const chatBody = document.querySelector('.chat-body');
+          chatBody.scrollTop = chatBody.scrollHeight;
+        } catch (error) {
+          console.error("Error sending message:", error);
+        }
+      } else {
+        console.warn("L'utilisateur connecté ne peut pas être l'interlocuteur.");
+      }
+    }
   };
 
   return (
-    <Tab.Container id="left-tabs-example" defaultActiveKey="first">
-      <ChatSidebar person_online={person_online} active={active} setActive={setActive} minisidebar={minisidebar} />
+    <Tab.Container id="left-tabs-example" activeKey={active}>
+      <Sidebar
+        conversations={conversations}
+        active={active}
+        setActive={setActive}
+        loadMessages={loadMessages}
+        currentUserId={currentUserId}
+      />
       <main className="main-content">
         <div className="container-fluid content-inner p-0" id="page_layout">
           <Tab.Content id="myTabContent">
-            <Tab.Pane eventKey="first">
-              <ChatHeader user={person_online[0]} />
-              <ChatBody messages />
-              <ChatFooter />
-            </Tab.Pane>
+            {conversations.map((conversation) => (
+              <ChatWindow
+                key={conversation.id}
+                conversation={conversation}
+                messages={messages[conversation.id] || []}
+                currentUserId={currentUserId}
+                deleteMessage={deleteMessage}
+                sendMessage={sendMessage}
+                isDeleting={isDeleting}
+              />
+            ))}
           </Tab.Content>
         </div>
       </main>
@@ -106,4 +143,4 @@ const Chats = () => {
   );
 };
 
-export default Chats;
+export default ChatLayout;

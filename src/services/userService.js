@@ -4,8 +4,7 @@ class UserService extends BaseService {
   constructor() {
     super('/users');
   }
-
-
+  
   getCurrentUser = () => this.get('/profile');
   updateProfile = (userData) => this.put('/update', userData);
   buyCredits = (amount) => this.post('/buy-credits', { amount });
@@ -30,4 +29,3 @@ class UserService extends BaseService {
 }
 
 export const userService = new UserService();
-
