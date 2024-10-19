@@ -5,7 +5,13 @@ class PostService extends BaseService {
     super('/posts');
   }
 
-  createPost = (postData) => this.post('/', postData);
+  createPost = (postData) => {
+    return this.post('/', postData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+  };
   
   getPostById = (postId) => this.get(`/${postId}`);
   
