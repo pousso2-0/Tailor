@@ -11,3 +11,8 @@ npm install -g depcheck
 npm install jwt-decode
 
 npm install lucide-react
+
+
+npm install lodash.debounce
+
+npm install --save-dev @types/lodash
