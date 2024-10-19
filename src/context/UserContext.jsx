@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { userService } from '../services/userService'; 
-import { useAuth } from './AuthContext'; 
+import { userService } from '../services/userService';
+import { useAuth } from './AuthContext';
 
 const UserContext = createContext();
 
@@ -12,26 +12,26 @@ export const UserProvider = ({ children }) => {
     useEffect(() => {
         const fetchUser = async () => {
             if (!isAuthenticated) {
-                setLoading(false);  
+                setLoading(false);
                 return;
             }
 
             try {
                 const user = await userService.getCurrentUser();
                 setCurrentUser(user.data);
-                console.log(user);
+                // console.log(user);
             } catch (error) {
                 console.error('Error fetching current user:', error);
                 setCurrentUser(null);
                 setIsAuthenticated(false);
-                
+
             } finally {
                 setLoading(false);
             }
         };
 
         fetchUser();
-    }, [isAuthenticated]); 
+    }, [isAuthenticated]);
     return (
         <UserContext.Provider value={{ currentUser, setCurrentUser, loading }}>
             {children}
