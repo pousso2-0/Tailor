@@ -1,0 +1,52 @@
+.comment-item {
+    padding: 10px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.comment-content {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.reply-comment-item {
+    padding: 10px;
+    margin-left: 50px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+}
+
+.reply-comment-content {
+    padding: 5px;
+}
+
+.reply-list {
+    margin-top: 15px;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* Prendre toute la hauteur de la fenêtre */
+}
+
+.main-content {
+    flex: 1;
+    /* Prend tout l'espace disponible pour le contenu principal */
+}
+
+.iq-footer {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
