@@ -37,7 +37,7 @@ const menuItems = [
         eventKey: 'message-menu',
         icon: 'chat',
         label: 'Message',
-        path: '/chat/index',
+        path: 'dashboard/app/chat',
         tooltip: 'Chat',
     },
     {

@@ -10,6 +10,7 @@ const LockScreen = lazy(() => import('./pages/auth/LockScreen'));
 const Recoverpw = lazy(() => import('./pages/auth/Recoverpw'));
 const SignIn = lazy(() => import('./pages/auth/SignIn'));
 const SignUp = lazy(() => import('./pages/auth/SignUp'));
+const Message = lazy(() => import('./pages/Chat/Chat'));
 
 // Lazy load des composants
 const Default = lazy(() => import('./layouts/Default'));
@@ -30,6 +31,7 @@ const AppRoutes = () => {
             } />
           <Route element={<PrivateRoute />}>
             <Route path="dashboard/app/user-profile-edit" element={<EditUserProfile />} />
+            <Route path='dashboard/app/chat' element={<Message />} />
           </Route>
         </Route>
 
