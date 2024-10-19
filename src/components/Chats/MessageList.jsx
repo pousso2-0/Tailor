@@ -3,7 +3,7 @@ import user1 from "../../assets/images/user/01.jpg";
 import user10 from "../../assets/images/user/10.jpg";
 
 const MessageList = ({ messages, currentUserId, receiver, deleteMessage, conversationId, isDeleting }) => {
-  // Nouvelle fonction pour formater l'heure
+
   const formatTime = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
