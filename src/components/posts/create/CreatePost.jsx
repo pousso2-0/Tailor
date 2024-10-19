@@ -35,20 +35,19 @@ const CreatePost = ({ user, setUser }) => {
 
    
     const handleMediaChange = (e) => {
-        const filesArray = Array.from(e.target.files); // Convertir en tableau
-    
-        // Créer un tableau de médias avec l'URL et le type de chaque fichier
+        const filesArray = Array.from(e.target.files);
+
         const mediaData = filesArray.map((file) => {
             if (file && (file.type.startsWith("image") || file.type.startsWith("video"))) {
-                setPreviewUrl(URL.createObjectURL(file)); 
-                return { file };
+                setPreviewUrl(URL.createObjectURL(file));
+                return { file, type: file.type.startsWith("image") ? "IMAGE" : "VIDEO" };
             } else {
-                alert("Veuillez sélectionner une image ou une vidéo valide.");
+                toast.error("Veuillez sélectionner une image ou une vidéo valide.");
                 return null;
             }
-        }).filter(Boolean); // Filtrer les valeurs nulles
-    
-        setMedias(mediaData); // Mettre à jour l'état avec les médias
+        }).filter(Boolean);
+
+        setMedias(mediaData);
     };
     
     
@@ -74,7 +73,8 @@ const CreatePost = ({ user, setUser }) => {
             formData.append('userId', user.id);
             if (medias.length) {
                 medias.forEach((media, index) => {
-                    formData.append(`media[${index}][url]`, media.file); // Associer le fichier média
+                    formData.append(`media`, media.file);
+                    formData.append(`mediaType`, media.type);
                 });
             }
             formData.forEach(console.log);
@@ -119,3 +119,5 @@ const CreatePost = ({ user, setUser }) => {
 };
 
 export default CreatePost;
+
+
