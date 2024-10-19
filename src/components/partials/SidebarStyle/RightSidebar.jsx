@@ -10,9 +10,15 @@ import SearchModal from "../../../components/SearchModal";
 const RightSidebar = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [users, setUsers] = useState([]);
 
-  const handleSearchUpdate = (term) => {
-    setSearchTerm(term);
+  // Fonction appelée lorsque l'utilisateur est sélectionné
+  const handleSearchUpdate = (selectedUserName) => {
+    console.log("handleSearchUpdate appelé avec :", selectedUserName); // Vérifiez si cette fonction est bien appelée
+    setSearchTerm(selectedUserName);
+    console.log("Utilisateur sélectionné :", selectedUserName);
   };
 
   const minirightsidebar = () => {
@@ -21,7 +27,16 @@ const RightSidebar = () => {
   };
 
   useEffect(() => {
-    // Logique pour gérer les événements
+    // Simulons le chargement des utilisateurs
+    setLoading(true);
+    setTimeout(() => {
+      console.log("Chargement des utilisateurs simulé"); // Vérifiez si le chargement est effectué
+      setUsers([
+        { id: 1, name: "John Doe", profilePicture: "path/to/john.jpg" },
+        { id: 2, name: "Jane Smith", profilePicture: "path/to/jane.jpg" },
+      ]);
+      setLoading(false);
+    }, 1000);
   }, []);
 
   return (
@@ -32,8 +47,13 @@ const RightSidebar = () => {
               <Card.Body className="px-0 pt-0">
                 <div className="p-4">
                   <h6 className="fw-semibold m-0">Chats</h6>
-                  <SearchBar searchTerm={searchTerm} />
-                  <SearchModal onSelectUser={handleSearchUpdate} />
+                  <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+                  <SearchModal
+                      users={users}
+                      loading={loading}
+                      error={error}
+                      onSelectUser={handleSearchUpdate} // Passer la fonction pour gérer la sélection
+                  />
                 </div>
                 <Tab.Container defaultActiveKey="first">
                   <ChatTabs />
@@ -47,11 +67,17 @@ const RightSidebar = () => {
                   <span className="material-symbols-outlined">chat</span>
                 </div>
                 <div className="conversion-button">
-                  <Button onClick={() => navigate('/chat/index')} className="btn btn-primary w-100 py-3 d-block rounded-0">
+                  <Button
+                      onClick={() => navigate('/chat/index')}
+                      className="btn btn-primary w-100 py-3 d-block rounded-0"
+                  >
                     View All Conversion
                   </Button>
                 </div>
-                <div className="right-sidebar-toggle bg-primary text-white mt-3 d-flex" onClick={minirightsidebar}>
+                <div
+                    className="right-sidebar-toggle bg-primary text-white mt-3 d-flex"
+                    onClick={minirightsidebar}
+                >
                   <span className="material-symbols-outlined">chat</span>
                 </div>
               </Card.Body>
