@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { postService } from "../../../services/postService";
 import { useAuth } from "../../../context/AuthContext";
-// import PostForm from "./PostForm";
 import PostForm from "./PorstForm";
 import PostModalForm from "./PostModalForm";
 import { toast } from "react-toastify";
@@ -21,7 +20,7 @@ const CreatePost = ({ user, setUser }) => {
 
     const handleShow = () => {
         if (!user || user.type !== "TAILLEUR") {
-            toast.error("Seuls les TAILLEURS peuvent créer des posts.");
+            alert("Seuls les TAILLEURS peuvent créer des posts.");
             return;
         }
         setShow(true);
@@ -34,32 +33,37 @@ const CreatePost = ({ user, setUser }) => {
         setPreviewUrl(null);
     };
 
+   
     const handleMediaChange = (e) => {
-        const filesArray = Array.from(e.target.files);
-
+        const filesArray = Array.from(e.target.files); // Convertir en tableau
+    
+        // Créer un tableau de médias avec l'URL et le type de chaque fichier
         const mediaData = filesArray.map((file) => {
             if (file && (file.type.startsWith("image") || file.type.startsWith("video"))) {
-                setPreviewUrl(URL.createObjectURL(file));
-                return { file, type: file.type.startsWith("image") ? "IMAGE" : "VIDEO" };
+                setPreviewUrl(URL.createObjectURL(file)); 
+                return { file };
             } else {
-                toast.error("Veuillez sélectionner une image ou une vidéo valide.");
+                alert("Veuillez sélectionner une image ou une vidéo valide.");
                 return null;
             }
-        }).filter(Boolean);
-
-        setMedias(mediaData);
+        }).filter(Boolean); // Filtrer les valeurs nulles
+    
+        setMedias(mediaData); // Mettre à jour l'état avec les médias
     };
+    
+    
+    
 
     const handlePostSubmit = async (e) => {
         e.preventDefault();
 
         if (!isAuthenticated) {
-            toast.error("Vous devez être connecté pour créer un post.");
+            alert("Vous devez être connecté pour créer un post.");
             return;
         }
 
         if (!user || user.type !== "TAILLEUR") {
-            toast.error("Seuls les TAILLEURS peuvent créer des posts.");
+            alert("Seuls les TAILLEURS peuvent créer des posts.");
             return;
         }
 
@@ -68,34 +72,29 @@ const CreatePost = ({ user, setUser }) => {
             formData.append('content', postContent);
             formData.append('isLocked', isLocked);
             formData.append('userId', user.id);
-
-            // Modification de la façon dont les médias sont ajoutés
             if (medias.length) {
                 medias.forEach((media, index) => {
                     formData.append(`media`, media.file);
                     formData.append(`mediaType`, media.type);
                 });
             }
+            formData.forEach(console.log);
+
 
             const response = await postService.createPost(formData);
             console.log("Post créé:", response.data);
-            toast.success("Post créé avec succès");
+            toast.success("Post Créer avec Succes");
 
             resetForm();
             handleClose();
         } catch (error) {
             console.error("Erreur lors de la création du post:", error);
-            if (error.response) {
-                console.error("Réponse du serveur:", error.response.data);
-                toast.error(`Erreur: ${error.response.data.message}`);
-            } else {
-                toast.error("Une erreur s'est produite lors de la création du post.");
-            }
+            alert("Une erreur s'est produite lors de la création du post.");
         }
     };
 
     if (!isAuthenticated || !user) {
-        return null;
+        return null; // ou afficher un message d'erreur
     }
 
     return (
