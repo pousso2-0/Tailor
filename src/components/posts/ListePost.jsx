@@ -14,9 +14,9 @@ function ListePost({ post, handleFollowToggle, loading ,children}) {
                             style={{ width: '50px', height: '50px' }}
                         />
                     </div>
-                    
+
                     <div className="w-100">
-                        
+
                         <div className="d-flex flex-column">
                             <div className="d-flex align-items-center">
                                 <h6 className="mb-0 text-dark fw-bold me-2">{post.user.name}</h6>
@@ -57,7 +57,7 @@ function ListePost({ post, handleFollowToggle, loading ,children}) {
                         </div>
                     </div>
                 </div>
-               
+
                 <div className="card-post-toolbar mt-2"> {children}</div>
             </div>
 
@@ -65,9 +65,9 @@ function ListePost({ post, handleFollowToggle, loading ,children}) {
                 <p className="text-dark text-capitalize" style={{ lineHeight: '1.6' }}>
                     {post.content}
                 </p>
-                
+
             </div>
-         
+
             {/* Media Carousel */}
             {post.media.length > 0 && (
                 <div className="rounded position-relative">
@@ -100,7 +100,7 @@ function ListePost({ post, handleFollowToggle, loading ,children}) {
                     </Carousel>
                 </div>
             )}
-      
+
 
             <div className="post-meta-likes mt-4">
                 <div className="d-flex align-items-center gap-2 flex-wrap">
@@ -129,4 +129,4 @@ function ListePost({ post, handleFollowToggle, loading ,children}) {
 }
 
 
-export default ListePost;   
+export default ListePost;

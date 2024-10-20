@@ -8,7 +8,7 @@ class StatusService extends BaseService {
   createStatus = (content, media, duration) => {
     const formData = new FormData();
     formData.append('content', content);
-    formData.append('mediaUrl', media); // Utilisez 'mediaUrl' ou 'media' selon ce que le backend attend
+    formData.append('mediaUrl', media);
     formData.append('duration', duration); // Format comme '5m', '2h', etc.
 
     return this.post('/', formData, {

@@ -12,7 +12,8 @@ const Recoverpw = lazy(() => import('./pages/auth/Recoverpw'));
 const SignIn = lazy(() => import('./pages/auth/SignIn'));
 const SignUp = lazy(() => import('./pages/auth/SignUp'));
 const UserView = lazy(() => import('./pages/friend/UserView'));
-
+const Stories = lazy(() => import('./pages/stories/Stories'));
+const Message = lazy(() => import('./pages/chat/chat'));
 
 // Lazy load des composants
 const Default = lazy(() => import('./layouts/Default'));
@@ -29,9 +30,9 @@ const AppRoutes = () => {
 
         <Route path="/" element={<Default />}>
           <Route path="dashboard/app/profile" element={<UserProfile />} />
-
           <Route path="/friend/UserView" element={<UserView />} />
-
+          <Route path='dashboard/app/chat' element={<Message />} />
+          <Route path="/stories" element={<Stories />} />
           <Route path='/' element={<Index />} />
 
           <Route path="dashboard/app/profile" element={

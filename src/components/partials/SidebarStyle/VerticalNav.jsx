@@ -37,7 +37,7 @@ const menuItems = [
         eventKey: 'message-menu',
         icon: 'chat',
         label: 'Message',
-        path: '/chat/index',
+        path: 'dashboard/app/chat',
         tooltip: 'Chat',
     },
     {
@@ -76,7 +76,7 @@ const VerticalNav = () => {
                     <NavItemWithTooltip key={index} path={item.path} icon={item.icon} label={item.label} tooltip={item.tooltip} />
                 )
             )}
-             {!isAuthenticated && (
+            {!isAuthenticated && (
                 <NavItemWithTooltip
                     key="connexion"
                     path="/auth/sign-in"
