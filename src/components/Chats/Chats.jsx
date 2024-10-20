@@ -6,7 +6,7 @@ import ChatWindow from "./ChatWindow";
 import { messageService } from "../../services/MessageService";
 import { userService } from '../../services/userService';
 
-const ChatLayout = () => {
+const Chat = () => {
   const [error, setError] = useState(null);
   const [active, setActive] = useState(null);
   const [conversations, setConversations] = useState([]);
@@ -143,4 +143,4 @@ const ChatLayout = () => {
   );
 };
 
-export default ChatLayout;
+export default Chat;
