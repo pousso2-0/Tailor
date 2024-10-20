@@ -27,11 +27,11 @@ const menuItems = [
         tooltip: 'Friend List',
     },
     {
-        eventKey: 'friends-menu',
+        eventKey: 'notification-menu',
         icon: 'people',
         label: 'Notification',
-        path: '/dashboards/app/friend-list',
-        tooltip: 'Friend List',
+        path: '/dashboard/app/notification',
+        tooltip: 'Notifications',
     },
     {
         eventKey: 'message-menu',
@@ -44,14 +44,8 @@ const menuItems = [
         eventKey: 'store-menu',
         icon: 'storefront',
         label: 'Store',
-        subItems: [
-            { path: '/dashboards/store/store-category-grid', label: 'Category Grid', tooltip: 'Category Grid', miniIcon: 'CG' },
-            { path: '/dashboards/store/store-category-list', label: 'Category List', tooltip: 'Category List', miniIcon: 'CL' },
-            { path: '/dashboards/store/store-detail', label: 'Store Detail', tooltip: 'Store Detail', miniIcon: 'SD' },
-            { path: '/dashboards/store/product-detail', label: 'Product Detail', tooltip: 'Product Detail', miniIcon: 'PD' },
-            { path: '/dashboards/store/store-checkout', label: 'Checkout', tooltip: 'Checkout', miniIcon: 'CO' },
-        ],
-    },
+        path: 'dashboard/app/store',
+    }
 ];
 
 

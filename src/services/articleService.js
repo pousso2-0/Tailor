@@ -23,7 +23,25 @@ class ArticleService extends BaseService {
 
   // Article-in-store endpoints
   listArticlesByCategoryForStore = (storeId, categoryId) => this.get(`/stores/${storeId}/category/${categoryId}`);
-  addArticleToStore = (storeId, articleData) => this.post(`/store/${storeId}`, articleData);
+  addArticleToStore = (storeId, articleData) => {
+    const formData = new FormData();
+    console.log('depuis le service', articleData.categoryId)
+
+    // Supposons que articleData est un objet avec des propriétés comme title, description, etc.
+    formData.append('name', articleData.name);
+    formData.append('description', articleData.description);
+    formData.append('price', articleData.price);
+    formData.append('stockCount', articleData.stockCount);
+    formData.append('categoryId', articleData.categoryId);
+    formData.append('image', articleData.image); // Changement de 'image' à 'files'
+    console.log('avant le post', formData)
+
+    return this.post(`/store/${storeId}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  };
   deleteArticleFromStore = (storeId, articleId) => this.delete(`/stores/${storeId}/articles/${articleId}`);
   deleteCategoryForStore = (storeId, categoryId) => this.delete(`/store/${storeId}/category/${categoryId}`);
 }

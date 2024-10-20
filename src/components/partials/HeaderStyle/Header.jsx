@@ -9,6 +9,7 @@ import FriendRequests from "./FriendRequests";
 import Notifications from "./Notifications";
 import UserDropdown from "./UserDropdown";
 import { useAuth } from "../../../context/AuthContext";
+import NotificationDropdown from "../../comments/notifications/NotificationDropdown";
 
 const Header = () => {
     const { isAuthenticated } = useAuth();
@@ -36,7 +37,7 @@ const Header = () => {
 
                         <ul className="navbar-nav navbar-list">
                             <FriendRequests />
-                            <Notifications />
+                            <NotificationDropdown />
                             {isAuthenticated && <UserDropdown />}
                         </ul>
                     </Container>
