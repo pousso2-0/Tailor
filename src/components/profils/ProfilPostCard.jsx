@@ -1,5 +1,5 @@
 import { Card, Row, Col } from "react-bootstrap";
-import Post from "../posts/show/Post";
+import Post from "../posts/create/Post";
 import CreatePost from "../posts/create/CreatePost";
 
 export default function ProfilPostCard({ user, setUser }) {

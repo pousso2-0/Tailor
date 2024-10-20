@@ -74,9 +74,11 @@ const CreatePost = ({ user, setUser }) => {
             formData.append('userId', user.id);
             if (medias.length) {
                 medias.forEach((media, index) => {
-                    formData.append(`media[${index}][url]`, media.file); // Associer le fichier média
+                    formData.append(`media`, media.file);
+                    formData.append(`mediaType`, media.type);
                 });
             }
+
             formData.forEach(console.log);
 
 

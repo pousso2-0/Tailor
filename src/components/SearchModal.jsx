@@ -1,9 +1,11 @@
 import React, { Fragment } from 'react';
 import { Dropdown, Form, Modal } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+
+import { Link, useNavigate } from 'react-router-dom';
 
 const SearchModal = ({ users, loading, error }) => {
-    // console.log(users);
+    const navigate = useNavigate();
+
 
     return (
         <Fragment>
@@ -41,7 +43,13 @@ const SearchModal = ({ users, loading, error }) => {
                             <div>Aucun utilisateur trouvé</div>
                         )}
                         {Array.isArray(users) && users.map((user) => (
-                            <div key={user.id} className="d-flex align-items-center search-hover py-2 px-3">
+
+                            <div key={user.id} className="d-flex align-items-center search-hover py-2 px-3"
+                                 onClick={() => {
+                                     console.log("Utilisateur cliqué :", user);
+                                     navigate(`/friend/UserView`, {state: user}); // Vérifiez ici
+                                 }}>
+
                                 <div className="flex-shrink-0">
                                     <img
                                         src={user.profilePicture || 'default-avatar.jpg'}

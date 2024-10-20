@@ -76,7 +76,7 @@ const VerticalNav = () => {
                     <NavItemWithTooltip key={index} path={item.path} icon={item.icon} label={item.label} tooltip={item.tooltip} />
                 )
             )}
-             {!isAuthenticated && (
+            {!isAuthenticated && (
                 <NavItemWithTooltip
                     key="connexion"
                     path="/auth/sign-in"

@@ -39,7 +39,9 @@ const SearchBar = () => {
     // Effet pour déclencher la recherche
     useEffect(() => {
         debouncedSearch(searchTerm);
-    
+
+
+
         return () => {
             debouncedSearch.cancel();
         };
