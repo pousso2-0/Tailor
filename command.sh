@@ -11,3 +11,7 @@ npm install -g depcheck
 npm install jwt-decode
 
 npm install lucide-react
+
+npm install react-feather
+
+npm install react-redux

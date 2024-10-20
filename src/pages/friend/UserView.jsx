@@ -15,25 +15,39 @@ const UserView = () => {
     const [showReportModal, setShowReportModal] = useState(false);
     const [messageContent, setMessageContent] = useState('');
     const [isFollowing, setIsFollowing] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [userProfile, setUserProfile] = useState(null);
 
     useEffect(() => {
+        const fetchUserProfile = async () => {
+            try {
+                const response = await userService.getUserProfileById(user.id);
+                setUserProfile(response.data);
+            } catch (error) {
+                console.error('Erreur lors de la récupération du profil utilisateur:', error);
+            }
+        };
+
+        fetchUserProfile();
+
         const checkFollowingStatus = async () => {
+            setIsLoading(true);
             try {
                 const response = await userService.isFollowing(user.id);
                 setIsFollowing(response.data.isFollowing);
             } catch (error) {
                 console.error('Erreur lors de la vérification du statut de suivi:', error);
                 setIsFollowing(false);
+            } finally {
+                setIsLoading(false);
             }
         };
 
         checkFollowingStatus();
-    }, [user.id]);
+    }, [user]);
 
     const handleShowReportModal = () => setShowReportModal(true);
     const handleCloseReportModal = () => setShowReportModal(false);
-
-    const validReasons = ['harcèlement', 'spam', 'contenu inapproprié']; // Liste des raisons valides
 
     const handleSubmitReport = async (reason) => {
         if (!reason) {
@@ -42,20 +56,14 @@ const UserView = () => {
         }
 
         try {
-            console.log('Reporting user:', user.id, 'Reason:', reason);
             await userService.reportUser(user.id, reason);
             alert("Signalement envoyé avec succès.");
             handleCloseReportModal();
         } catch (error) {
             console.error('Erreur lors du signalement de l\'utilisateur:', error);
-            if (error.response) {
-                console.error('Détails de l\'erreur:', error.response.data);
-            }
             alert("Erreur lors du signalement. Veuillez réessayer.");
         }
     };
-
-
 
     const handleCloseModal = () => {
         setShowModal(false);
@@ -64,19 +72,8 @@ const UserView = () => {
 
     const handleShowModal = () => setShowModal(true);
 
-    const formatLastSeen = (date) => {
-        const now = new Date();
-        const lastSeen = new Date(date);
-        const diffTime = Math.abs(now - lastSeen);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-        if (diffDays === 0) return "Aujourd'hui";
-        if (diffDays === 1) return "Hier";
-        if (diffDays < 7) return `Il y a ${diffDays} jours`;
-        return lastSeen.toLocaleDateString();
-    };
-
     const handleFollowToggle = async () => {
+        setIsLoading(true);
         try {
             if (isFollowing) {
                 await userService.unfollowUser(user.id);
@@ -86,8 +83,10 @@ const UserView = () => {
                 setIsFollowing(true);
             }
         } catch (error) {
-            console.error('Erreur lors du suivi de l\'utilisateur:', error);
-            alert("Erreur lors du suivi de l'utilisateur. Veuillez réessayer.");
+            console.error('Erreur lors du suivi/désabonnement de l\'utilisateur:', error);
+            alert("Une erreur s'est produite. Veuillez réessayer.");
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -104,7 +103,6 @@ const UserView = () => {
             };
 
             await messageService.sendMessage(messageData);
-            console.log("Message envoyé avec succès !");
             handleCloseModal();
         } catch (error) {
             console.error('Erreur lors de l\'envoi du message:', error);
@@ -112,37 +110,41 @@ const UserView = () => {
         }
     };
 
+    if (!userProfile) {
+        return <div>Chargement...</div>;
+    }
+
     return (
-        <Container className="py-5">
-            <Card className="border-0 shadow-lg">
+        <Container className="py-5" style={{ height: '86vh' }}>
+            <Card className="border-0 shadow-lg rounded">
                 <Row className="g-0">
                     <Col md={4} className="border-end">
                         <Card.Body className="text-center d-flex flex-column align-items-center">
                             <div className="position-relative mb-4">
                                 <img
-                                    src={user.profilePicture || 'https://via.placeholder.com/150'}
-                                    alt={user.name}
+                                    src={userProfile.profilePicture || 'https://via.placeholder.com/150'}
+                                    alt={userProfile.name}
                                     className="rounded-circle img-thumbnail"
                                     style={{ width: '180px', height: '180px', objectFit: 'cover' }}
                                 />
                                 <Badge
-                                    bg={user.isOnline ? "success" : "secondary"}
+                                    bg={userProfile.isOnline ? "success" : "secondary"}
                                     className="position-absolute bottom-0 start-100 translate-middle px-2 py-1 rounded-pill"
                                 >
-                                    {user.isOnline ? 'En ligne' : 'Hors ligne'}
+                                    {userProfile.isOnline ? 'En ligne' : 'Hors ligne'}
                                 </Badge>
                             </div>
-                            <h2 className="fw-bold mb-1">{user.name}</h2>
-                            <p className="text-muted mb-4">{user.profession || 'Profession non renseignée'}</p>
-                            {!user.isOnline && (
-                                <p className="text-muted small mb-4">
-                                    Dernière connexion : {formatLastSeen(user.lastSeenAt)}
-                                </p>
-                            )}
+                            <h2 className="fw-bold mb-1">{userProfile.name}</h2>
+                            <p className="text-muted mb-4">{userProfile.type}</p>
                             <div className="d-flex justify-content-center gap-2 mb-4">
-                                <Button variant="primary" className="rounded-pill px-4 py-2" onClick={handleFollowToggle}>
+                                <Button
+                                    variant="primary"
+                                    className="rounded-pill px-4 py-2"
+                                    onClick={handleFollowToggle}
+                                    disabled={isLoading}
+                                >
                                     <UserPlus size={18} className="me-2" />
-                                    {isFollowing ? 'Unfollow' : 'Follow'}
+                                    {isLoading ? 'Chargement...' : (isFollowing ? 'Unfollow' : 'Follow')}
                                 </Button>
                                 <Button variant="outline-primary" className="rounded-pill px-4 py-2" onClick={handleShowModal}>
                                     <MessageCircle size={18} className="me-2" />
@@ -163,33 +165,45 @@ const UserView = () => {
                                     <Mail size={20} className="me-3 text-primary" />
                                     <div>
                                         <strong className="d-block">Email</strong>
-                                        {user.email || 'Non renseigné'}
+                                        {userProfile.email || 'Non renseigné'}
                                     </div>
                                 </ListGroup.Item>
                                 <ListGroup.Item className="d-flex align-items-center border-0 px-0 py-2">
                                     <Phone size={20} className="me-3 text-primary" />
                                     <div>
                                         <strong className="d-block">Téléphone</strong>
-                                        {user.phone || 'Non renseigné'}
+                                        {userProfile.phone || 'Non renseigné'}
                                     </div>
                                 </ListGroup.Item>
                                 <ListGroup.Item className="d-flex align-items-center border-0 px-0 py-2">
                                     <Briefcase size={20} className="me-3 text-primary" />
                                     <div>
-                                        <strong className="d-block">Profession</strong>
-                                        {user.profession || 'Non renseignée'}
+                                        <strong className="d-block">Type</strong>
+                                        {userProfile.type}
                                     </div>
                                 </ListGroup.Item>
                                 <ListGroup.Item className="d-flex align-items-center border-0 px-0 py-2">
                                     <MapPin size={20} className="me-3 text-primary" />
                                     <div>
                                         <strong className="d-block">Localisation</strong>
-                                        {user.location || 'Non renseignée'}
+                                        {userProfile.location || 'Non renseignée'}
                                     </div>
                                 </ListGroup.Item>
                             </ListGroup>
                             <h4 className="fw-bold mt-5 mb-3">Bio</h4>
-                            <p className="text-muted">{user.bio || "Aucune biographie disponible."}</p>
+                            <p className="text-muted">{userProfile.bio || "Aucune biographie disponible."}</p>
+                            <h4 className="fw-bold mt-3 mb-3">Statistiques</h4>
+                            <Row>
+                                <Col>
+                                    <p className="text-muted">Abonnés : {userProfile.followersCount}</p>
+                                </Col>
+                                <Col>
+                                    <p className="text-muted">Abonnements : {userProfile.followingCount}</p>
+                                </Col>
+                                <Col>
+                                    <p className="text-muted">Publications : {userProfile.postsCount}</p>
+                                </Col>
+                            </Row>
                         </Card.Body>
                     </Col>
                 </Row>
@@ -201,15 +215,14 @@ const UserView = () => {
                 onSend={handleSendMessage}
                 messageContent={messageContent}
                 setMessageContent={setMessageContent}
-                userName={user.name}
+                userName={userProfile.name}
             />
-
 
             <ReportModal
                 show={showReportModal}
                 onClose={handleCloseReportModal}
                 onSubmit={handleSubmitReport}
-                userName={user.name}
+                userName={userProfile.name}
             />
         </Container>
     );

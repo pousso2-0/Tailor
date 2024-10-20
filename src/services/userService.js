@@ -10,6 +10,7 @@ class UserService extends BaseService {
   updateProfile = (userData) => this.put('/update', userData);
   buyCredits = (amount) => this.post('/buy-credits', { amount });
   upgradeToPremium = () => this.post('/upgrade-to-premium');
+  getUserProfileById = (id) => this.get(`/profile/${id}`);
   checkPremiumStatus = () => this.get('/premium-status');
   searchUsers = (name) => this.get('/search', { params: { name } });
   followUser = (followingId) => this.post('/follow', { followingId });

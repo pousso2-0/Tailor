@@ -44,7 +44,7 @@ const SearchModal = ({ users, loading, error }) => {
                             <div key={user.id} className="d-flex align-items-center search-hover py-2 px-3"
                                  onClick={() => {
                                      console.log("Utilisateur cliqué :", user);
-                                     navigate(`/friend/UserView`, {state: user}); // Vérifiez ici
+                                     navigate(`/friend/UserView`, {state: user});
                                  }}>
                                 <div className="flex-shrink-0">
                                     <img

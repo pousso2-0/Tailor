@@ -10,8 +10,8 @@ const SearchBar = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [selectedUserProfile, setSelectedUserProfile] = useState(null);
 
-    // Fonction de recherche debounced
     const debouncedSearch = useCallback(
         debounce(async (term) => {
             if (term.length === 0) {
@@ -36,7 +36,6 @@ const SearchBar = () => {
         []
     );
 
-    // Effet pour déclencher la recherche
     useEffect(() => {
         debouncedSearch(searchTerm);
 
@@ -47,6 +46,15 @@ const SearchBar = () => {
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
+    };
+
+    const handleUserClick = async (userId) => {
+        try {
+            const userProfile = await userService.getUserProfileById(userId);
+            setSelectedUserProfile(userProfile.data);
+        } catch (err) {
+            console.error('Erreur lors de la récupération du profil utilisateur', err);
+        }
     };
 
     return (
@@ -69,7 +77,20 @@ const SearchBar = () => {
                     <span className="material-symbols-outlined">search12</span>
                 </Link>
             </Dropdown.Toggle>
-            <SearchModal users={users} loading={loading} error={error} />
+            <SearchModal
+                users={users}
+                loading={loading}
+                error={error}
+                onUserClick={handleUserClick} // Passer la fonction ici
+            />
+            {selectedUserProfile && (
+                <div>
+                    {/* Affichez les détails de l'utilisateur sélectionné ici */}
+                    {/*<h3>{selectedUserProfile.name}</h3>*/}
+                    <p>{selectedUserProfile.email}</p>
+                    {/* Ajoutez d'autres détails selon vos besoins */}
+                </div>
+            )}
         </Dropdown>
     );
 };
