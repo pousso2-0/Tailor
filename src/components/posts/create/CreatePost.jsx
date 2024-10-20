@@ -78,6 +78,7 @@ const CreatePost = ({ user, setUser }) => {
                     formData.append(`mediaType`, media.type);
                 });
             }
+
             formData.forEach(console.log);
 
 
