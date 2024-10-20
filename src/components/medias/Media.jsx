@@ -19,7 +19,7 @@ export default function Media({ medias }) {
                         {medias.map((media) => (
                             <Col key={media.id} md={4} className="mt-md-0 mt-3">
                                 <Link to="#" onClick={() => imageOnSlide(media.id)}>
-                                    {media.type === 'photo' ? (
+                                    {media.type === 'image/jpeg' ? (
                                         <img src={media.url} className="img-fluid rounded w-100" />
                                     ) : (
                                         <video controls className="img-fluid rounded w-100">
@@ -33,7 +33,7 @@ export default function Media({ medias }) {
                     </Row>
                 ) : (
                     <Link to="#" onClick={() => imageOnSlide(10)} className="rounded">
-                        {medias[0]?.type === 'photo' ? (
+                        {medias[0]?.type === 'image/jpeg' ? (
                             <img src={medias[0].url} className="img-fluid rounded w-100" />
                         ) : (
                             <video controls className="img-fluid rounded w-100">
