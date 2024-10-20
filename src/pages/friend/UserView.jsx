@@ -6,6 +6,7 @@ import { messageService } from '../../services/MessageService';
 import { userService } from '../../services/userService';
 import MessageModal from '../../components/chat/MessageModal';
 import ReportModal from '../../components/report/ReportModal';
+import VoteModal from '../../components/vote/VoteModal';
 
 const UserView = () => {
     const location = useLocation();
@@ -13,10 +14,12 @@ const UserView = () => {
 
     const [showModal, setShowModal] = useState(false);
     const [showReportModal, setShowReportModal] = useState(false);
+    const [showVoteModal, setShowVoteModal] = useState(false); // État pour le VoteModal
     const [messageContent, setMessageContent] = useState('');
     const [isFollowing, setIsFollowing] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [userProfile, setUserProfile] = useState(null);
+    const [rating, setRating] = useState(0); // État pour la note
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -45,6 +48,21 @@ const UserView = () => {
 
         checkFollowingStatus();
     }, [user]);
+
+    const handleVote = async (newRating) => {
+        try {
+            await userService.vote(user.id, newRating);
+            alert("Vote enregistré avec succès.");
+            setRating(newRating); // Met à jour la note
+            handleCloseVoteModal(); // Ferme le modal après le vote
+        } catch (error) {
+            console.error('Erreur lors de l\'enregistrement du vote:', error);
+            alert("Erreur lors de l'enregistrement du vote. Veuillez réessayer.");
+        }
+    };
+
+    const handleShowVoteModal = () => setShowVoteModal(true); // Ouvre le VoteModal
+    const handleCloseVoteModal = () => setShowVoteModal(false); // Ferme le VoteModal
 
     const handleShowReportModal = () => setShowReportModal(true);
     const handleCloseReportModal = () => setShowReportModal(false);
@@ -115,7 +133,7 @@ const UserView = () => {
     }
 
     return (
-        <Container className="py-5" style={{ height: '86vh' }}>
+        <Container className="py-5" style={{ height: '86vh', marginRight: '20%' }}>
             <Card className="border-0 shadow-lg rounded">
                 <Row className="g-0">
                     <Col md={4} className="border-end">
@@ -155,6 +173,11 @@ const UserView = () => {
                                 <Flag size={18} className="me-2" />
                                 Signaler
                             </Button>
+                            {userProfile.type === 'TAILLEUR' && (
+                                <Button variant="success" className="rounded-pill px-4 py-2 mt-3" onClick={handleShowVoteModal}>
+                                    Voter
+                                </Button>
+                            )}
                         </Card.Body>
                     </Col>
                     <Col md={8}>
@@ -223,6 +246,12 @@ const UserView = () => {
                 onClose={handleCloseReportModal}
                 onSubmit={handleSubmitReport}
                 userName={userProfile.name}
+            />
+
+            <VoteModal
+                show={showVoteModal}
+                onClose={handleCloseVoteModal}
+                onVote={handleVote}
             />
         </Container>
     );
