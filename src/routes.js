@@ -10,7 +10,7 @@ const LockScreen = lazy(() => import("./pages/auth/LockScreen"));
 const Recoverpw = lazy(() => import("./pages/auth/Recoverpw"));
 const SignIn = lazy(() => import("./pages/auth/SignIn"));
 const SignUp = lazy(() => import("./pages/auth/SignUp"));
-const Message = lazy(() => import("./pages/Chat/Chat"));
+const Message = lazy(() => import("./pages/chat/ChatPage"));
 const ChatLayout = lazy(() => import("./layouts/ChatLayout"));
 
 // Lazy load des composants
