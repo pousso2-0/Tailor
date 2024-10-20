@@ -14,12 +14,12 @@ const UserView = () => {
 
     const [showModal, setShowModal] = useState(false);
     const [showReportModal, setShowReportModal] = useState(false);
-    const [showVoteModal, setShowVoteModal] = useState(false); // État pour le VoteModal
+    const [showVoteModal, setShowVoteModal] = useState(false);
     const [messageContent, setMessageContent] = useState('');
     const [isFollowing, setIsFollowing] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [userProfile, setUserProfile] = useState(null);
-    const [rating, setRating] = useState(0); // État pour la note
+    const [rating, setRating] = useState(0);
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -53,16 +53,16 @@ const UserView = () => {
         try {
             await userService.vote(user.id, newRating);
             alert("Vote enregistré avec succès.");
-            setRating(newRating); // Met à jour la note
-            handleCloseVoteModal(); // Ferme le modal après le vote
+            setRating(newRating);
+            handleCloseVoteModal();
         } catch (error) {
             console.error('Erreur lors de l\'enregistrement du vote:', error);
             alert("Erreur lors de l'enregistrement du vote. Veuillez réessayer.");
         }
     };
 
-    const handleShowVoteModal = () => setShowVoteModal(true); // Ouvre le VoteModal
-    const handleCloseVoteModal = () => setShowVoteModal(false); // Ferme le VoteModal
+    const handleShowVoteModal = () => setShowVoteModal(true);
+    const handleCloseVoteModal = () => setShowVoteModal(false);
 
     const handleShowReportModal = () => setShowReportModal(true);
     const handleCloseReportModal = () => setShowReportModal(false);
@@ -132,6 +132,8 @@ const UserView = () => {
         return <div>Chargement...</div>;
     }
 
+    const hideFollowVoteButtons = ['VENDEUR', 'CLIENT', 'ADMIN'].includes(userProfile.type);
+
     return (
         <Container className="py-5" style={{ height: '86vh', marginRight: '20%' }}>
             <Card className="border-0 shadow-lg rounded">
@@ -155,15 +157,17 @@ const UserView = () => {
                             <h2 className="fw-bold mb-1">{userProfile.name}</h2>
                             <p className="text-muted mb-4">{userProfile.type}</p>
                             <div className="d-flex justify-content-center gap-2 mb-4">
-                                <Button
-                                    variant="primary"
-                                    className="rounded-pill px-4 py-2"
-                                    onClick={handleFollowToggle}
-                                    disabled={isLoading}
-                                >
-                                    <UserPlus size={18} className="me-2" />
-                                    {isLoading ? 'Chargement...' : (isFollowing ? 'Unfollow' : 'Follow')}
-                                </Button>
+                                {!hideFollowVoteButtons && (
+                                    <Button
+                                        variant="primary"
+                                        className="rounded-pill px-4 py-2"
+                                        onClick={handleFollowToggle}
+                                        disabled={isLoading}
+                                    >
+                                        <UserPlus size={18} className="me-2" />
+                                        {isLoading ? 'Chargement...' : (isFollowing ? 'Unfollow' : 'Follow')}
+                                    </Button>
+                                )}
                                 <Button variant="outline-primary" className="rounded-pill px-4 py-2" onClick={handleShowModal}>
                                     <MessageCircle size={18} className="me-2" />
                                     Message

@@ -14,6 +14,8 @@ import FollowSection from '../../components/posts/FollowSection.jsx';
 import SharePostSection from "../../components/posts/SharePostSection.jsx";
 import { postService } from '../../services/postService.js';
 import { Share2 } from 'lucide-react';
+import Stories from '../stories/Stories';
+import PostForm from "../../components/posts/create/CreatePost.jsx";
 
 async function loadAllPosts() {
     try {
@@ -32,6 +34,10 @@ const Index = () => {
     const [modalShow, setModalShow] = useState(false);
     const [loading, setLoading] = useState(false);
     const [loadPage, setLoadPage] = useState(true);
+    const user = {
+        profilePicture: 'url_to_profile_picture',
+        name: 'Nom de l’utilisateur',
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -170,12 +176,10 @@ const Index = () => {
         { id: 6, label: 'Adorable', type: 'lovely', icon: '😍' }
     ];
 
-
     if (loadPage) {
-        return(
+        return (
             <div id="loading">
-                <div id="loading-center">
-                </div>
+                <div id="loading-center"></div>
             </div>
         );
     }
@@ -184,6 +188,14 @@ const Index = () => {
         <div id="content-page" className="content-inner">
             <Container>
                 <Row className="gx-4">
+                    <Col lg={8} className="rounded-lg">
+                        <div className="mb-4">
+                            <Stories />
+                        </div>
+                        <div className="mb-4">
+                            <PostForm user={user} handleShow={() => setModalShow(true)} />
+                        </div>
+                    </Col>
                     <Col lg={8}>
                         <div id="content">
                             <Row className="special-post-container">
@@ -192,7 +204,7 @@ const Index = () => {
                                         <div className="card-body">
                                             <div>
                                                 {allPosts.map((post) => (
-                                                    <div key={post.id} className="user-post mt-4">
+                                                    <div key={post.id} className="user-post mt-4 mb-4"> {/* Ajoutez une marge en bas */}
                                                         <ListePost post={post}>
                                                             <FollowSection
                                                                 isFollowing={post.isFollowing}

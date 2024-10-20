@@ -1,0 +1,469 @@
+// Variables
+$primary-color: #3b82f6; // blue-500
+$gradient-start: #ec4899; // pink-500
+$gradient-end: #a855f7; // purple-500
+$text-color: #374151; // gray-700
+$white: #ffffff;
+$black: #000000;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-column-center {
+  @include flex-center;
+  flex-direction: column;
+}
+
+// Stories Container
+.stories-container {
+  width: 100%;
+  max-width: 72rem; // max-w-6xl
+  margin: 0 auto;
+
+  .stories-scroll {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+// Create Story Button
+.create-story-button {
+  @include flex-column-center;
+  min-width: 80px;
+  cursor: pointer;
+  transition: opacity 0.3s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  .button-circle {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background-color: $primary-color;
+    border: 2px solid #d1d5db;
+    @include flex-center;
+
+    span {
+      font-size: 1.5rem;
+      color: $white;
+    }
+  }
+
+  .button-text {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: $text-color;
+  }
+}
+
+// Story Thumbnail
+.story-thumbnail {
+  @include flex-column-center;
+  min-width: 80px;
+  cursor: pointer;
+  transition: opacity 0.3s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  .thumbnail-container {
+    width: 4rem;
+    height: 4rem;
+    padding: 2px;
+    border-radius: 50%;
+    background: linear-gradient(to right, $gradient-start, $gradient-end);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid $white;
+    }
+  }
+
+  .thumbnail-name {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: $text-color;
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+// Story Viewer
+.story-viewer {
+  position: fixed;
+  inset: 0;
+  background-color: rgba($black, 0.5);
+  z-index: 50;
+  @include flex-center;
+
+  .viewer-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: $black;
+    border-radius: 0.5rem;
+    overflow: hidden;
+
+    @media (min-width: 768px) {
+      width: 400px;
+      height: 700px;
+    }
+  }
+
+  .viewer-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    z-index: 30;
+    background: linear-gradient(to bottom, rgba($black, 0.5), transparent);
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        img {
+          width: 2rem;
+          height: 2rem;
+          border-radius: 50%;
+          border: 1px solid $white;
+        }
+
+        span {
+          color: $white;
+          font-weight: 600;
+        }
+      }
+
+      .close-button {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        background-color: rgba($black, 0.5);
+        color: $white;
+        font-size: 1.5rem;
+        @include flex-center;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: rgba($black, 0.7);
+        }
+      }
+    }
+  }
+}
+
+
+
+//// Variables
+//$primary-color: #3b82f6; // blue-500
+//$gradient-start: #ec4899; // pink-500
+//$gradient-end: #a855f7; // purple-500
+//$text-color: #374151; // gray-700
+//$white: #ffffff;
+//$black: #000000;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-column-center {
+  @include flex-center;
+  flex-direction: column;
+}
+
+// Story Creation Modal
+.create-story-modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba($black, 0.7); // Assombrir le fond pour plus de contraste
+  @include flex-center;
+  z-index: 100;
+
+  .modal-content {
+    background-color: $white;
+    border-radius: 1.5rem; // Arrondir encore plus pour un look doux
+    padding: 2.5rem; // Augmenter le padding pour plus d'espace
+    width: 100%;
+    max-width: 32rem; // Ajuster la largeur maximale
+    box-shadow: 0 8px 30px rgba($black, 0.3); // Ombre plus prononcée pour la profondeur
+    animation: fadeIn 0.4s ease; // Animation d'apparition plus douce
+
+    h2 {
+      font-size: 1.75rem; // Augmenter la taille du titre pour plus d'impact
+      font-weight: bold;
+      margin-bottom: 1.5rem; // Espace en bas
+      color: $primary-color; // Couleur principale pour le titre
+      text-align: center; // Centrer le titre
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem; // Espacement accru entre les champs
+
+      input {
+        width: 100%;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.75rem; // Arrondir davantage les coins
+        padding: 0.75rem; // Augmenter le padding
+
+        font-size: 1rem; // Taille de police légèrement plus grande
+        transition: border-color 0.3s, box-shadow 0.3s; // Transition douce
+
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+          box-shadow: 0 0 0 3px rgba($primary-color, 0.2); // Ombre plus large lors du focus
+        }
+      }
+
+      // Styled File Input
+      .file-input {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 1rem; // Espace au-dessus
+
+        input[type="file"] {
+          display: none; // Cacher l'input natif
+        }
+
+        .file-label {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          max-width: 30rem; // Largeur maximale
+          padding: 1rem 1.5rem; // Padding pour le label
+          border: 2px dashed #e5e7eb; // Bordure en pointillé
+          border-radius: 0.75rem; // Coins arrondis
+          background-color: #f9fafb; // Couleur de fond douce
+          color: $text-color; // Couleur du texte
+          font-weight: bold; // Mettre en gras
+          text-align: center; // Centrer le texte
+          cursor: pointer; // Curseur pointer
+          transition: background-color 0.3s, border-color 0.3s; // Transitions douces
+
+          &:hover {
+            background-color: #f3f4f6; // Changer la couleur au survol
+            border-color: $primary-color; // Changer la couleur de la bordure au survol
+          }
+
+          &:active {
+            background-color: #e5e7eb; // Couleur lors de l'activation
+          }
+        }
+
+        .file-preview {
+          margin-top: 1rem; // Espace au-dessus de la prévisualisation
+          width: 100%;
+          max-width: 30rem; // Largeur maximale
+          height: 10rem; // Hauteur de la prévisualisation
+          border: 1px solid #e5e7eb; // Bordure
+          border-radius: 0.75rem; // Coins arrondis
+          background-color: #f3f4f6; // Couleur de fond
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden; // Cacher les débordements
+
+          img, video {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; // Ajuster l'image ou la vidéo
+            border-radius: 0.75rem; // Arrondir les coins de la prévisualisation
+          }
+
+          .no-preview {
+            color: #9ca3af; // Couleur pour le texte sans prévisualisation
+            font-style: italic; // Italique
+          }
+        }
+      }
+    }
+
+    .preview-container {
+      position: relative;
+      width: 100%;
+      height: 18rem; // Augmenter la hauteur pour plus de visibilité
+      background-color: #f3f4f6;
+      border-radius: 0.75rem; // Arrondir les coins de la prévisualisation
+      overflow: hidden;
+      margin-top: 1.75rem; // Augmenter l'espace au-dessus
+
+      img, video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; // Couvrir complètement la zone
+        border-radius: 0.75rem; // Arrondir les coins de la prévisualisation
+      }
+
+      .preview-controls {
+        position: absolute;
+        bottom: 1rem; // Ajuster la position
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba($black, 0.6); // Assombrir le fond des contrôles
+        color: $white;
+        padding: 0.75rem 1.5rem; // Augmenter le padding
+        border-radius: 0.5rem; // Arrondir les coins
+        font-weight: bold; // Mettre en gras
+      }
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1.5rem; // Augmenter l'espace entre les boutons
+      margin-top: 2.5rem; // Augmenter l'espace au-dessus
+
+      button {
+        padding: 0.75rem 1.5rem; // Garder le padding pour un bouton plus grand
+        border-radius: 0.75rem; // Arrondir les coins
+
+        font-weight: bold; // Mettre en gras
+
+        &.cancel {
+          border: 1px solid #e5e7eb;
+          background-color: #f9fafb; // Couleur de fond douce
+          transition: background-color 0.3s; // Transition douce
+
+          &:hover {
+            background-color: #f3f4f6; // Changer la couleur au survol
+          }
+        }
+
+        &.submit {
+          background-color: $primary-color;
+          color: $white;
+          transition: background-color 0.3s, transform 0.2s; // Ajout de transition
+
+          &:hover {
+            background-color: darken($primary-color, 10%);
+            transform: scale(1.05); // Légère augmentation au survol
+          }
+        }
+      }
+    }
+  }
+}
+
+// Animation pour le modal
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+// Story Wrapper
+.story-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  video, img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .story-content {
+    position: absolute;
+    bottom: 80px;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    color: $white;
+    text-shadow: 0 1px 2px rgba($black, 0.5);
+  }
+
+  .story-actions {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: linear-gradient(to top, rgba($black, 0.5), transparent);
+
+    button {
+      background: none;
+      border: none;
+      color: $white;
+      cursor: pointer;
+      padding: 0.5rem;
+      font-size: 1.25rem;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+
+    .story-reply {
+      flex: 1;
+
+      input {
+        width: 100%;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 20px;
+        background-color: rgba($white, 0.2);
+        color: $white;
+
+        &::placeholder {
+          color: rgba($white, 0.8);
+        }
+
+        &:focus {
+          outline: none;
+          background-color: rgba($white, 0.3);
+        }
+      }
+    }
+
+    .story-additional-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+  }
+}

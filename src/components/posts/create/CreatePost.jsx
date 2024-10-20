@@ -19,7 +19,7 @@ const CreatePost = ({ user, setUser }) => {
     };
 
     const handleShow = () => {
-        if (!user || user.type !== "TAILLEUR") {
+        if (!isAuthenticated || user.type != "TAILLEUR") {
             alert("Seuls les TAILLEURS peuvent créer des posts.");
             return;
         }
