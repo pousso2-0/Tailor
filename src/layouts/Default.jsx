@@ -17,9 +17,11 @@ const Default = () => {
           <Header />
           <Outlet />
         </div>
+
         <Col lg={4}>
           <SuggestPeople />
         </Col>
+        
       </div>
       <RightSidebar />
       <Footer />

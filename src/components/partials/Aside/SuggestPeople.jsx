@@ -1,4 +1,4 @@
-import {Col} from "react-bootstrap";
+// import {Col} from "react-bootstrap";
 import Card from "../../Card";
 
 import user01 from "../../../assets/images/user/01.jpg";

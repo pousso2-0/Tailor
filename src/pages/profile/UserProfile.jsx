@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Tab, Modal, Button, Form } from "react-bootstrap";
+import { Container, Row, Col, Tab } from "react-bootstrap";
 import ProfileHeader from "../../components/profils/ProfileHeader";
 import { useUser } from "../../context/UserContext";
-import pageBgImg from "../../assets/images/user/user-1.jpg";
+// import pageBgImg from "../../assets/images/user/user-1.jpg";
 import ProfilAboutCard from "../../components/profils/ProfilAboutCard";
 import ProfilFriendCard from "../../components/profils/ProfilFriendCard";
 import ProfilPostCard from "../../components/profils/ProfilPostCard";
@@ -19,7 +19,6 @@ const UserProfile = () => {
 
   const [credit, setCredit] = useState(null);
   const [currentCredit, setCurrentCredit] = useState(0);
-  const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -38,11 +37,7 @@ const UserProfile = () => {
           console.log(response.data);
           setCurrentCredit(response.data.credits);
           console.log("Crédits mis à jour avec succès");
-          setShowAlert(true);
           handleClose();
-          setTimeout(() => {
-            setShowAlert(false);
-          }, 1500);
         })
         .catch((error) => {
           console.error("Erreur lors de l'achat des crédits", error);
