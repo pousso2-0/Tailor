@@ -3,13 +3,15 @@ import { Dropdown } from "react-bootstrap";
 import { useUser } from '../../../context/UserContext';
 import { userService } from '../../../services/userService';
 import { Settings, ChevronDown } from 'lucide-react';
+import { useAuth } from "../../../context/AuthContext";
 
 const FriendRequests = () => {
     const { currentUser } = useUser();
-    const [userType, setUserType] = useState(currentUser ? currentUser.type : '');
+    const { userRole } = useAuth();
+    const [userType, setUserType] = useState(currentUser ? userRole : '');
 
     const getOptions = () => {
-        switch (currentUser.type) {
+        switch (userRole) {
             case "TAILLEUR": return ["VENDEUR"];
             case "CLIENT": return ["TAILLEUR", "VENDEUR"];
             case "VENDEUR": return ["TAILLEUR"];
@@ -59,19 +61,11 @@ const FriendRequests = () => {
             </Dropdown.Menu>
             <style jsx>{`
                 .custom-dropdown-toggle {
-                    background: #f8f9fa;
-                    border: 1px solid #e9ecef;
                     color: #495057;
-                    width: 32px;
-                    height: 32px;
                     padding: 0;
-                    border-radius: 50%;
                     transition: all 0.2s ease;
                 }
-                .custom-dropdown-toggle:hover, .custom-dropdown-toggle:focus {
-                    background: #e9ecef;
-                    color: #212529;
-                }
+
                 .custom-dropdown-menu {
                     min-width: 200px;
                     border: none;
@@ -115,4 +109,4 @@ const FriendRequests = () => {
     );
 };
 
-export default FriendRequests;ss
+export default FriendRequests;

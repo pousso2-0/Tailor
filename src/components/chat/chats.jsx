@@ -6,6 +6,7 @@ import ChatWindow from "./ChatWindow";
 import { messageService } from "../../services/MessageService";
 import { userService } from '../../services/userService';
 
+
 const ChatLayout = () => {
     const [error, setError] = useState(null);
     const [active, setActive] = useState(null);

@@ -226,6 +226,7 @@ span.avatar-status {
 	}
 }
 .other-user {
+
 	flex-direction: row-reverse;
 	text-align: right;
 }
@@ -436,7 +437,9 @@ button.close-btn-res {
 		div.sidebar-toggle {
 			display: block;
 		}
+
 	}
+
 
 	.chat-head{
 		.sidebar-toggle {
@@ -452,6 +455,7 @@ button.close-btn-res {
 			text-align: center;
 			color: var(--#{$variable-prefix}primary);
 		}
+
 	}
 	#chat-user-detail-popup {
 		overflow-y: scroll;
@@ -509,21 +513,22 @@ button.close-btn-res {
 // ADD MORE STYLES
 
 .message-sent, .message-received {
+
 	position: relative;
 	padding: 10px 15px;
 	max-width: 350px;
 	min-width: 200px;
 	word-wrap: wrap;
-	margin-bottom: 10px;
-	border-radius: 18px;
+	margin-bottom: 14px;
+	border-radius: 25px;
 	transition: all 0.3s ease;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .message-sent {
-	background-color: #0084ff;
+	background-color: #50b5ff;
 	color: white;
-	border-radius: 18px 18px 0 18px;
+	// border-radius: 18px 18px 0 18px;
 	align-self: flex-end;
 	margin-left: auto;
 }
@@ -531,7 +536,7 @@ button.close-btn-res {
 .message-received {
 	background-color: #e5e5ea;
 	color: black;
-	border-radius: 18px 18px 18px 0;
+	// border-radius: 18px 18px 18px 0;
 	align-self: flex-start;
 	margin-right: auto;
 }

@@ -3,6 +3,7 @@ import { Tab } from "react-bootstrap";
 import ConversationHeader from "./conversationHeader";
 import MessageList from "./messageList";
 import MessageInput from "./messageInput";
+import { useUser } from "../../context/UserContext";
 
 const ChatWindow = ({
                         conversation,
@@ -12,6 +13,8 @@ const ChatWindow = ({
                         sendMessage,
                         isDeleting
                     }) => {
+
+    const {currentUser} = useUser()
     const receiver = conversation.receiver.id === currentUserId ? conversation.sender : conversation.receiver;
 
     return (
@@ -30,6 +33,7 @@ const ChatWindow = ({
                     deleteMessage={deleteMessage}
                     conversationId={conversation.id}
                     isDeleting={isDeleting}
+                    currentUser={currentUser}
                 />
             </div>
             <MessageInput sendMessage={sendMessage} />

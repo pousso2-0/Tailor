@@ -83,7 +83,7 @@ const SignIn = () => {
                   <ul className="swiper-wrapper list-inline m-0 p-0">
                     <SwiperSlide>
                       <img
-                        src={login1}
+                        src="https://img.freepik.com/premium-photo/close-up-african-american-couturier-using-industrial-sewing-machine-fabric-material-tailoring-studio-suitmaker-cutting-clothing-garment-piece-creating-bespoke-attire_482257-72320.jpg"
                         className="signin-img img-fluid mb-5 rounded-3"
                         alt="images"
                       />

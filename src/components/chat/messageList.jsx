@@ -2,7 +2,7 @@ import React from "react";
 import user1 from "../../assets/images/user/01.jpg";
 import user10 from "../../assets/images/user/10.jpg";
 
-const MessageList = ({ messages, currentUserId, receiver, deleteMessage, conversationId, isDeleting }) => {
+const MessageList = ({ messages, currentUserId, receiver, deleteMessage, conversationId, isDeleting, currentUser }) => {
 
     const formatTime = (dateString) => {
         const date = new Date(dateString);
@@ -47,7 +47,7 @@ const MessageList = ({ messages, currentUserId, receiver, deleteMessage, convers
                         </div>
                         {isSender && (
                             <img
-                                src={user10}
+                                src={currentUser.profilePicture}
                                 alt="chat-user"
                                 className="avatar-40 rounded-pill ms-2"
                                 loading="lazy"

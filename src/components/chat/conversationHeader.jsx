@@ -33,7 +33,7 @@ const ConversationHeader = ({ receiver }) => {
             </div>
             <div className="avatar chat-user-profile m-0">
               <img
-                  src={receiver.profilePicture || user1}
+                  src={receiver.profilePicture}
                   alt="avatar"
                   className="avatar-50 rounded-pill"
                   loading="lazy"

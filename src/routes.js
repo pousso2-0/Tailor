@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { RequireRole } from './context/AuthContext';
 
+
 const Index = lazy(() => import("./pages/feeds/Index"));
 const PrivateRoute = lazy(() => import('./hoc/PrivateRoute'));
 const UserProfile = lazy(() => import('./pages/profile/UserProfile'));
@@ -16,6 +17,7 @@ const UserView = lazy(() => import('./pages/friend/UserView'));
 const Message = lazy(() => import('./pages/chat/chat'));
 const Notification = lazy(() => import('./pages/notification/Notification'));
 const Store = lazy(() => import('./pages/store/Store'));
+const ChatLayout = lazy(() => import("./layouts/ChatLayout"));
 
 // Lazy load des composants
 const Default = lazy(() => import('./layouts/Default'));
@@ -33,7 +35,7 @@ const AppRoutes = () => {
         <Route path="/" element={<Default />}>
           <Route path="dashboard/app/profile" element={<UserProfile />} />
           <Route path="/friend/UserView" element={<UserView />} />
-          <Route path='dashboard/app/chat' element={<Message />} />
+          {/* <Route path='dashboard/app/chat' element={<Message />} /> */}
           {/*<Route path="/stories" element={<Stories />} />*/}
           <Route path="/dashboard/app/notification" element={<Notification />} />
           <Route path="/dashboard/app/store" element={<Store />} />
@@ -44,10 +46,16 @@ const AppRoutes = () => {
           <Route path="dashboard/app/profile" element={
             <UserProfile />
           } />
+
+
           <Route element={<PrivateRoute />}>
             <Route path="dashboard/app/user-profile-edit" element={<EditUserProfile />} />
           </Route>
         </Route>
+
+        <Route path="/" element={<ChatLayout />}>
+          <Route path="dashboard/app/chat" element={<Message />} />
+          </Route>
 
         <Route path="/auth/confirm-mail" element={<ConfirmMail />} />
         <Route path="/auth/lock-screen" element={<LockScreen />} />
