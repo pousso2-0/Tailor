@@ -34,7 +34,7 @@ const AppRoutes = () => {
           <Route path="dashboard/app/profile" element={<UserProfile />} />
           <Route path="/friend/UserView" element={<UserView />} />
           <Route path='dashboard/app/chat' element={<Message />} />
-          <Route path="/stories" element={<Stories />} />
+          {/*<Route path="/stories" element={<Stories />} />*/}
           <Route path="/dashboard/app/notification" element={<Notification />} />
           <Route path="/dashboard/app/store" element={<Store />} />
 

@@ -16,6 +16,7 @@ import { postService } from '../../services/postService.js';
 import { Share2 } from 'lucide-react';
 import Stories from '../stories/Stories';
 import PostForm from "../../components/posts/create/CreatePost.jsx";
+import { useUser } from '../../context/UserContext'; // Importez le hook useUser
 
 async function loadAllPosts() {
     try {
@@ -26,6 +27,7 @@ async function loadAllPosts() {
 }
 
 const Index = () => {
+    const { currentUser, loading: userLoading } = useUser(); // Récupérez les données de l'utilisateur
     const [loadContent, setLoadContent] = useState(true);
     const [allPosts, setAllPosts] = useState([]);
     const [mainComment, setMainComment] = useState('');
@@ -34,10 +36,6 @@ const Index = () => {
     const [modalShow, setModalShow] = useState(false);
     const [loading, setLoading] = useState(false);
     const [loadPage, setLoadPage] = useState(true);
-    const user = {
-        profilePicture: 'url_to_profile_picture',
-        name: 'Nom de l’utilisateur',
-    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -176,7 +174,7 @@ const Index = () => {
         { id: 6, label: 'Adorable', type: 'lovely', icon: '😍' }
     ];
 
-    if (loadPage) {
+    if (userLoading || loadPage) {
         return (
             <div id="loading">
                 <div id="loading-center"></div>
@@ -189,11 +187,13 @@ const Index = () => {
             <Container>
                 <Row className="gx-4">
                     <Col lg={8} className="rounded-lg">
-                        <div className="mb-4">
+                        <div>
                             <Stories />
                         </div>
                         <div className="mb-4">
-                            <PostForm user={user} handleShow={() => setModalShow(true)} />
+                            {currentUser && (
+                                <PostForm user={currentUser} handleShow={() => setModalShow(true)} />
+                            )}
                         </div>
                     </Col>
                     <Col lg={8}>
@@ -204,7 +204,7 @@ const Index = () => {
                                         <div className="card-body">
                                             <div>
                                                 {allPosts.map((post) => (
-                                                    <div key={post.id} className="user-post mt-4 mb-4"> {/* Ajoutez une marge en bas */}
+                                                    <div key={post.id} className="user-post mt-4 mb-4">
                                                         <ListePost post={post}>
                                                             <FollowSection
                                                                 isFollowing={post.isFollowing}

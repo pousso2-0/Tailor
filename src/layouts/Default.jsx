@@ -14,6 +14,7 @@ const Default = () => {
         <div className="position-relative">
           <Header />
           <Outlet />
+
         </div>
       </div>
       <RightSidebar />

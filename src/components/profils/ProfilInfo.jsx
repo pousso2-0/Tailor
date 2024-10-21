@@ -1,18 +1,21 @@
-import { Card, Col, Row } from "react-bootstrap";
+import { Col, Row, Modal, Card, Button } from "react-bootstrap";
+
 import { Link } from "react-router-dom";
 import coin from "../../assets/images/gamipress/coin.svg";
-import credit from "../../assets/images/gamipress/credit.svg";
-import gems from "../../assets/images/gamipress/gems.svg";
-import img3 from "../../assets/images/icon/facebook.png";
-import img4 from "../../assets/images/icon/twitter.png";
-import img5 from "../../assets/images/icon/instagram.png";
-import img6 from "../../assets/images/icon/google.png";
-import img7 from "../../assets/images/icon/youtube.png";
-import img8 from "../../assets/images/icon/linkedin.png";
+import { cardStyle, titleStyle, subtitleStyle, inputContainerStyle, labelStyle, inputWrapperStyle, inputStyle, dollarSignStyle, buttonStyle } from "./style/FormStyle"
 
-export default function ProfilInfo({ user }) {
-    if(!user)
-        return;
+export default function ProfilInfo({
+                                       user,
+                                       currentCredit,
+                                       handleChange,
+                                       handleSubmit,
+                                       handleClose,
+                                       show,
+                                       handleShow,
+                                       credit,
+                                   }) {
+
+    if (!user) return;
     return (
         <Card className="profile-box">
             <Card.Body>
@@ -26,115 +29,93 @@ export default function ProfilInfo({ user }) {
                                     alt="coin"
                                     loading="lazy"
                                 />
-                                <h6 className="font-size-14 fw-semibold">6765 Coins</h6>
+                                <h6 className="font-size-14 fw-semibold">{currentCredit}</h6>
                             </li>
-                            <li className="d-flex align-items-center gap-1">
-                                <img
-                                    src={credit}
-                                    className="img-fluid avatar-24"
-                                    alt="credit"
-                                    loading="lazy"
-                                />
-                                <h6 className="font-size-14 fw-semibold">
-                                    7180 Credits
-                                </h6>
-                            </li>
-                            <li className="d-flex align-items-center gap-1">
-                                <img
-                                    src={gems}
-                                    className="img-fluid avatar-24"
-                                    alt="coin"
-                                    loading="lazy"
-                                />
-                                <h6 className="font-size-14 fw-semibold">100 Gems</h6>
-                            </li>
+                            <Button
+                                type="button"
+                                onClick={handleShow}
+                                variant="primary"
+                                className="d-block w-[100px] "
+                            >
+                                Upgrade
+                            </Button>
+                            <Modal
+                                show={show}
+                                onHide={handleClose}
+                                centered
+                                // id="custom-post-modal"
+                                className={cardStyle}
+                            >
+                                <div className="modal-header d-flex justify-content-between">
+                                    <div  className="d-flex gap-2 align-items-center">
+
+                                        <h2 style={titleStyle}>Purchase Credit</h2>
+                                        <img
+                                            src={coin}
+                                            className="avatar-24 mb-2"
+                                            alt="coin"
+                                            loading="lazy"
+                                        />
+                                    </div>
+                                    <Link to="#" className="lh-1" onClick={handleClose}>
+                                        <span className="material-symbols-outlined">close</span>
+                                    </Link>
+                                </div>
+                                <Modal.Body>
+                                    <div style={cardStyle}>
+                                        <p style={subtitleStyle}>
+                                            Enter the amount of credit you wish to purchase
+                                        </p>
+                                        <form onSubmit={handleSubmit}>
+                                            <div style={inputContainerStyle}>
+                                                <label htmlFor="amount" style={labelStyle}>
+                                                    Amount
+                                                </label>
+                                                <div style={inputWrapperStyle}>
+                                                    <span style={dollarSignStyle}>XOF</span>
+                                                    <input
+                                                        type="number"
+                                                        style={inputStyle}
+                                                        id="creditAmount"
+                                                        placeholder="Enter amount"
+                                                        value={credit}
+                                                        onChange={handleChange}
+                                                        min="0"
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
+                                            <button type="submit" style={buttonStyle}>
+                                                Purchase Credit
+                                            </button>
+                                        </form>
+                                    </div>
+                                </Modal.Body>
+                            </Modal>
                         </ul>
-                        <div className="social-links">
-                            <ul className="social-data-block d-flex align-items-center justify-content-center list-inline p-0 m-0">
-                                <li className="text-center pe-3">
-                                    <Link to="#">
-                                        <img
-                                            src={img3}
-                                            className="img-fluid rounded"
-                                            alt="facebook"
-                                            loading="lazy"
-                                        />
-                                    </Link>
-                                </li>
-                                <li className="text-center pe-3">
-                                    <Link to="#">
-                                        <img
-                                            src={img4}
-                                            className="img-fluid rounded"
-                                            alt="Twitter"
-                                            loading="lazy"
-                                        />
-                                    </Link>
-                                </li>
-                                <li className="text-center pe-3">
-                                    <Link to="#">
-                                        <img
-                                            src={img5}
-                                            className="img-fluid rounded"
-                                            alt="Instagram"
-                                            loading="lazy"
-                                        />
-                                    </Link>
-                                </li>
-                                <li className="text-center pe-3">
-                                    <Link to="#">
-                                        <img
-                                            src={img6}
-                                            className="img-fluid rounded"
-                                            alt="Google plus"
-                                            loading="lazy"
-                                        />
-                                    </Link>
-                                </li>
-                                <li className="text-center pe-3">
-                                    <Link to="#">
-                                        <img
-                                            src={img7}
-                                            className="img-fluid rounded"
-                                            alt="You tube"
-                                            loading="lazy"
-                                        />
-                                    </Link>
-                                </li>
-                                <li className="text-center md-pe-3 pe-0">
-                                    <Link to="#">
-                                        <img
-                                            src={img8}
-                                            className="img-fluid rounded"
-                                            alt="linkedin"
-                                            loading="lazy"
-                                        />
-                                    </Link>
-                                </li>
-                            </ul>
-                        </div>
+
                     </Col>
                     <Col lg={4} className="text-center profile-center">
                         <div className="header-avatar position-relative d-inline-block">
-                            <span className="change-profile-image bg-primary rounded-pill">
-                                <span className="material-symbols-outlined text-white font-size-16">
-                                    photo_camera
-                                </span>
-                            </span>
+              <span className="change-profile-image bg-primary rounded-pill">
+                <span className="material-symbols-outlined text-white font-size-16">
+                  photo_camera
+                </span>
+              </span>
                             <img
                                 src={user?.profilePicture}
                                 alt="user"
                                 className="avatar-150 border border-4 border-white rounded-3"
                             />
                             <span className="badge bg-success fw-500 letter-spacing-1 chat-status">
-                                online
-                            </span>
+                online
+              </span>
                         </div>
                         <h5 className="d-flex align-items-center justify-content-center gap-1 mb-2">
                             {user.name}{" "}
                             <span className="badge  bg-primary rounded-pill material-symbols-outlined font-size-14 p-0 custom-done">
-                                done
-                            </span>
+                done
+              </span>
                         </h5>
                         <ul className="d-flex align-items-center justify-content-center gap-3 list-inline p-0 m-0">
                             <li className="d-flex align-items-center gap-1">
@@ -142,8 +123,8 @@ export default function ProfilInfo({ user }) {
                                     location_on
                                 </h6>
                                 <span className="font-size-14 text-uppercase fw-500">
-                                    {user.location}
-                                </span>
+                  {user.location}
+                </span>
                             </li>
                         </ul>
                     </Col>
@@ -155,7 +136,6 @@ export default function ProfilInfo({ user }) {
                         </ul>
                     </Col>
                 </Row>
-
             </Card.Body>
         </Card>
     );
