@@ -10,7 +10,7 @@ const Default = () => {
   return (
     <>
       <Sidebar />
-      <div className="main-content">
+      <div className="main-content" style={{ minHeight: "100vh" }}>
         <div className="position-relative">
           <Header />
           <Outlet />

@@ -15,8 +15,11 @@ import { setSetting } from './store/setting/actions'
 import "./assets/custom/scss/socialv-custom.scss"
 import { UserProvider } from './context/UserContext';
 import { AuthProvider } from './context/AuthContext';
+import {usePresence} from "./hoc/usePresence";
+
 
 function App() {
+  usePresence();
   const dispatch = useDispatch()
   dispatch(setSetting())
   return (

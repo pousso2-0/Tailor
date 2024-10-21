@@ -5,11 +5,6 @@ class ArticleService extends BaseService {
     super('/articles');
   }
 
-  getAllArticles = () => this.get();
-  getArticle = (id) => this.get(`/${id}`);
-  createArticle = (articleData) => this.post('', articleData);
-  updateArticle = (id, articleData) => this.put(`/${id}`, articleData);
-  deleteArticle = (id) => this.delete(`/${id}`);
 
   // Store-related endpoints
   getAllStores = () => this.get('/stores');

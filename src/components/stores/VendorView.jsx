@@ -10,7 +10,6 @@ import { articleService } from "../../services/articleService";
 import Modal from "../ui/Modal"; // Assurez-vous d'importer votre composant Modal
 
 export const VendorView = ({ stores }) => {
-    const triggerRef = useRef(null);
     const [activeManager, setActiveManager] = useState(null);
     const [articles, setArticles] = useState([]);
     const [openMenu, setOpenMenu] = useState(null);
@@ -169,7 +168,6 @@ export const VendorView = ({ stores }) => {
 
             <Card.Body className="p-6">
                 {renderManager()}
-
                 {articles && articles.length > 0 ? (
                     <div className="rounded-lg overflow-hidden">
                         <div className="overflow-x-auto">
@@ -238,7 +236,7 @@ export const VendorView = ({ stores }) => {
                                         <td className="px-6 py-4 text-center flex justify-center space-x-2">
                                             {editingArticleId === item.id ? (
                                                 <>
-                                                    <Button onClick={() => handleSaveEdit(item.id)}>Sauvegarder</Button>
+                                                    <Button className={"bg-primary"} onClick={() => handleSaveEdit(item.id)}>Sauvegarder</Button>
                                                     <Button onClick={handleCancelEdit}>Annuler</Button>
                                                 </>
                                             ) : (

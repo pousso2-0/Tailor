@@ -7,7 +7,7 @@ class OrderService extends BaseService {
 
   createOrder = (orderData) => this.post('/', orderData);
 
-  getOrders = () => this.get('/');
+  getOrders = (storeId) => this.get(`/${storeId}`);
 
   updateOrderStatus = (orderId, statusData) => this.put(`/${orderId}`, statusData);
 

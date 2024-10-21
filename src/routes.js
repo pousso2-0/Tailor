@@ -16,6 +16,7 @@ const Stories = lazy(() => import('./pages/stories/Stories'));
 const Message = lazy(() => import('./pages/chat/chat'));
 const Notification = lazy(() => import('./pages/notification/Notification'));
 const Store = lazy(() => import('./pages/store/Store'));
+const OrderList = lazy(() => import('./components/orders/OrderList'))
 
 // Lazy load des composants
 const Default = lazy(() => import('./layouts/Default'));
@@ -37,6 +38,8 @@ const AppRoutes = () => {
           <Route path="/stories" element={<Stories />} />
           <Route path="/dashboard/app/notification" element={<Notification />} />
           <Route path="/dashboard/app/store" element={<Store />} />
+          <Route path="/dashboard/app/orders" element={<OrderList />} />
+
 
           <Route path='/' element={<Index />} />
 

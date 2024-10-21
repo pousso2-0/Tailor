@@ -40,19 +40,19 @@ const menuItems = [
         path: 'dashboard/app/chat',
         tooltip: 'Chat',
     },
-    {
-        eventKey: 'store-menu',
-        icon: 'storefront',
-        label: 'Store',
-        path: 'dashboard/app/store',
-    }
+    // {
+    //     eventKey: 'store-menu',
+    //     icon: 'storefront',
+    //     label: 'Store',
+    //     path: 'dashboard/app/store',
+    // }
 ];
 
 
 
 const VerticalNav = () => {
     const [activeMenu, setActiveMenu] = useState('');
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, userRole } = useAuth();
 
     return (
         <Accordion as="ul" className="navbar-nav iq-main-menu" id="sidebar-menu">
@@ -70,6 +70,28 @@ const VerticalNav = () => {
                     <NavItemWithTooltip key={index} path={item.path} icon={item.icon} label={item.label} tooltip={item.tooltip} />
                 )
             )}
+            {
+                isAuthenticated && ["VENDEUR", "TAILLEUR"].includes(userRole) && (
+                    <>
+
+                    <NavItemWithTooltip
+                        key="store-menu"
+                        path="dashboard/app/store"
+                        icon="storefront"
+                        label="Store"
+                        tooltip="Store"
+                    />
+                <NavItemWithTooltip
+                key="orders-menu"
+                path="/dashboard/app/orders"
+                icon="shopping_cart"
+                label="Mes Commandes"
+                tooltip="Mes Commandes"
+                />
+                    </>
+
+                )
+            }
             {!isAuthenticated && (
                 <NavItemWithTooltip
                     key="connexion"

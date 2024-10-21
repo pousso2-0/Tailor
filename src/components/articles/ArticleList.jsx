@@ -1,19 +1,16 @@
 import React from 'react';
 import { Card, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import {OnlineDot} from "../presences/OnlineDot";
 
-const ArticleList = ({ stores, selectedCategory = null }) => {
-    // Filtrage des articles par catégorie, ou afficher tous les articles si aucune catégorie n'est sélectionnée
+const ArticleList = ({ stores, selectedCategory = null, onArticleClick, quantities }) => {
     const filteredStores = stores.map(store => ({
         ...store,
         articles: selectedCategory
-            ? store.articles.filter(item =>
-                item.category?.name === selectedCategory
-            )
-            : store.articles, // Pas de filtre si aucune catégorie n'est sélectionnée
+            ? store.articles.filter(item => item.category?.name === selectedCategory)
+            : store.articles,
     }));
 
-    // Vérifier si des articles existent
     const hasArticles = filteredStores.some(store => store.articles.length > 0);
 
     return (
@@ -30,7 +27,11 @@ const ArticleList = ({ stores, selectedCategory = null }) => {
                     filteredStores.flatMap(store =>
                         (store.articles || []).map(item => (
                             <Col sm="6" md="4" lg="3" key={`${store.id}-${item.id}`}>
-                                <Card className="card-block card-stretch card-height product">
+                                <Card
+                                    className="card-block card-stretch card-height product cursor-pointer"
+                                    onClick={() => onArticleClick(item, store)}
+                                    style={{ cursor: 'pointer' }}
+                                >
                                     <Card.Body>
                                         <div className="d-flex align-items-center justify-content-between pb-3">
                                             <div className="d-flex align-items-center">
@@ -41,7 +42,9 @@ const ArticleList = ({ stores, selectedCategory = null }) => {
                                                 />
                                                 <div className="ms-2">
                                                     <p className="mb-0 line-height">Posté par</p>
-                                                    <h6><Link to="#">{store.user?.name}</Link></h6>
+                                                    <h6>{store.user?.name}</h6>
+                                                    {/* Utilisation de OnlineDot pour afficher le statut en ligne */}
+                                                    <OnlineDot userId={store.user?.id} />
                                                 </div>
                                             </div>
                                         </div>
@@ -54,7 +57,7 @@ const ArticleList = ({ stores, selectedCategory = null }) => {
                                             <h6 className="price">${item.price}</h6>
                                         </div>
                                         <div className="product-description mt-3">
-                                            <Link to="#" className="mb-1">{item.name}</Link>
+                                            <div className="mb-1">{item.name}</div>
                                             <p className="category text-primary ps-3 mb-0 position-relative">
                                                 {item.category?.name}
                                             </p>
