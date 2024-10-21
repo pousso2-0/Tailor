@@ -1,6 +1,5 @@
 import React, { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { RequireRole } from './context/AuthContext';
 
 const Index = lazy(() => import("./pages/feeds/Index"));
 const PrivateRoute = lazy(() => import('./hoc/PrivateRoute'));

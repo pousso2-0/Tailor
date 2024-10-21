@@ -19,7 +19,7 @@ export default function Media({ medias }) {
                         {medias.map((media) => (
                             <Col key={media.id} md={4} className="mt-md-0 mt-3">
                                 <Link to="#" onClick={() => imageOnSlide(media.id)}>
-                                    {media.type === 'photo' ? (
+                                    {String(media.type).toLocaleLowerCase()  === 'photo' ? (
                                         <img src={media.url} className="img-fluid rounded w-100" />
                                     ) : (
                                         <video controls className="img-fluid rounded w-100">

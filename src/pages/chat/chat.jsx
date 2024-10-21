@@ -1,10 +1,2 @@
-import Chats from "../../components/chat/chats";
-
-
-const Chat = () => {
-    return (
-        <Chats />
-    )
-}
-
+import Chat from "../../components/chat/Chat";
 export default  Chat;
